@@ -1,0 +1,62 @@
+# ===================================================================
+# Spring Boot configuration for the "prod" profile.
+#
+# This configuration overrides the application.yml file.
+#
+# ===================================================================
+
+
+spring:
+  application:
+    name: hazard
+  jackson:
+    serialization:
+      indent-output: true
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${RAPIDTOX_CONNECTION_STRING}
+    username: ${RAPIDTOX_USER}
+    password: ${RAPIDTOX_PASSWORD}
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      minimum-idle: 2
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      #hibernate.default_schema: ccd_app
+# Logging
+logging:
+  level:
+    gov.epa.ccte.api.*: debug
+    org.springframework: warn
+
+# server
+server:
+  servlet:
+    context-path: /
+  #port: 9300
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
+    min-response-size: 1024
+
+# sentry
+sentry:
+  dsn: https://759677c712840df32860cca7c35a2193@ccte-app-monitoring.epa.gov/15
+  # Set traces-sample-rate to 1.0 to capture 100% of transactions for performance monitoring.
+  # We recommend adjusting this value in production.
+  traces-sample-rate: 1.0
+  environment: staging
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
